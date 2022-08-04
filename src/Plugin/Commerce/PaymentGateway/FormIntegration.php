@@ -48,14 +48,14 @@ class FormIntegration extends OffsitePaymentGatewayBase implements FormIntegrati
    *
    * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  private $requestStack;
+  protected $requestStack;
 
   /**
    * The logger factory.
    *
    * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
    */
-  private $loggerChannelFactory;
+  protected $loggerChannelFactory;
 
   /**
    * The time service.
@@ -69,7 +69,7 @@ class FormIntegration extends OffsitePaymentGatewayBase implements FormIntegrati
    *
    * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
-  private $moduleHandler;
+  protected $moduleHandler;
 
   /**
    * Constructs a new PaymentGatewayBase object.
@@ -298,7 +298,7 @@ class FormIntegration extends OffsitePaymentGatewayBase implements FormIntegrati
    * @return array
    *    An array of the decrypted Sagepay response.
    */
-  private function decryptSagepayResponse($formPassword, $encryptedResponse) {
+  protected function decryptSagepayResponse($formPassword, $encryptedResponse) {
     $decrypt = \SagepayUtil::decryptAes($encryptedResponse, $formPassword);
     $decryptArray = \SagepayUtil::queryStringToArray($decrypt);
     if (!$decrypt || empty($decryptArray)) {

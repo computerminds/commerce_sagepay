@@ -24,7 +24,7 @@ trait SagepayCommon {
    * @return \SagepayCustomerDetails
    *   The sagepay customer details object.
    */
-  private function getBillingAddress(OrderInterface $order) {
+  protected function getBillingAddress(OrderInterface $order) {
     /** @var \Drupal\address\Plugin\Field\FieldType\AddressItem $address */
     $billingAddress = $order->getBillingProfile()->get('address')->first();
 
@@ -198,7 +198,7 @@ trait SagepayCommon {
    * @return array
    *    The array of statuses and messages.
    */
-  private function decipherSagepayError(OrderInterface $order, array $decryptedSagepayResponse = []) {
+  protected function decipherSagepayError(OrderInterface $order, array $decryptedSagepayResponse = []) {
 
     // Check for a valid status callback.
     switch ($decryptedSagepayResponse['Status']) {
