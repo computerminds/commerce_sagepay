@@ -342,7 +342,7 @@ class FormIntegration extends OffsitePaymentGatewayBase implements FormIntegrati
         }
       }
     }
-    $basket->setDeliveryTaxAmount($taxAmount);
+
     if (count($discounts)) {
       $basket->setDiscounts($discounts);
     }
@@ -352,14 +352,28 @@ class FormIntegration extends OffsitePaymentGatewayBase implements FormIntegrati
       $shipments = $order->get('shipments')->referencedEntities();
 
       $delivery = 0;
+      $shipping_tax_amount = 0;
       if (!empty(($shipments)) && $shippingAddress = $this->getShippingAddress(reset($shipments))) {
         $sagepayFormApi->addAddress($shippingAddress);
 
         foreach ($shipments as $shipment) {
           $delivery = $delivery + (float) $shipment->getAmount()->getNumber();
+          if ($shipping_adjustments = $shipment->getAdjustments()) {
+            foreach ($shipping_adjustments as $shipping_adjustment) {
+              if ($shipping_adjustment->getType() == 'tax') {
+                $shipping_tax_amount += (float) $shipping_adjustment->getAmount()->getNumber();
+              }
+            }
+          }
         }
       }
-      $basket->setDeliveryNetAmount($delivery);
+
+      $shipping_net = $delivery - $shipping_tax_amount;
+      $basket->setDeliveryTaxAmount($shipping_tax_amount);
+      $basket->setDeliveryNetAmount($shipping_net);
+    }
+    else {
+      $basket->setDeliveryTaxAmount($taxAmount);
     }
 
     // Sanity check. If the basket total isn't correct override it and log it.
