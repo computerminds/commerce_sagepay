@@ -222,7 +222,7 @@ class FormIntegration extends OffsitePaymentGatewayBase implements FormIntegrati
     ])) {
       $payment = $this->createPayment($decryptedSagepayResponse, $order);
       $payment->remote_state = $decryptedSagepayResponse['Status'];
-      $payment->state = 'capture_completed';
+      $payment->state = 'completed';
       $payment->save();
       $logLevel = 'info';
       $logMessage = 'OK Payment callback received from SagePay for order %order_id with status code %status';
