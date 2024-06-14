@@ -279,7 +279,7 @@ class FormIntegration extends OffsitePaymentGatewayBase implements FormIntegrati
     $payment = $paymentStorage->create([
       'state' => 'authorization',
       'amount' => $order->getTotalPrice(),
-      'payment_gateway' => $this->entityId,
+      'payment_gateway' => $this->parentEntity->id(),
       'order_id' => $order->id(),
       'test' => $this->getMode() == 'test',
       'remote_id' => $decryptedSagepayResponse['VendorTxCode'],
